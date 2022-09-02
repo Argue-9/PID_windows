@@ -93,7 +93,7 @@ int main(void)
   MX_UART8_Init();
   MX_CAN1_Init();
   /* USER CODE BEGIN 2 */
-
+  CAN_DriverInit();
   /* USER CODE END 2 */
 
   /* Init scheduler */

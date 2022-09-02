@@ -284,7 +284,9 @@
 				126,
 				127,
 				128,
-				129
+				129,
+				131,
+				133
 			]
 		},
 		{
@@ -471,6 +473,16 @@
 				"backtrace" : 5,
 				"fragment" : "E:/HotPot_RM/Test/STM32F427IIHX_FLASH.ld",
 				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "User/pid.c",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "User/pid.h",
+				"role" : "flags"
 			}
 		],
 		"language" : "C"
@@ -574,7 +586,9 @@
 				119,
 				120,
 				123,
-				130
+				130,
+				132,
+				134
 			]
 		},
 		{
@@ -620,7 +634,9 @@
 				126,
 				127,
 				128,
-				129
+				129,
+				131,
+				133
 			]
 		},
 		{
@@ -631,7 +647,7 @@
 				25,
 				47,
 				78,
-				131
+				135
 			]
 		}
 	],
@@ -1321,6 +1337,28 @@
 			"compileGroupIndex" : 0,
 			"path" : "Middlewares/Third_Party/FreeRTOS/Source/timers.c",
 			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "User/motor.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "User/motor.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "User/pid.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "User/pid.h",
+			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
