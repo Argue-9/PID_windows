@@ -25,7 +25,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "usart.h"
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -128,9 +129,8 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
-
-    osDelay(500);
     HAL_GPIO_TogglePin(LED_G_GPIO_Port,LED_G_Pin);
+    osDelay(500);
   }
   /* USER CODE END StartDefaultTask */
 }
@@ -148,8 +148,9 @@ void LED_Task(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    HAL_GPIO_TogglePin(LED_R_GPIO_Port,LED_R_Pin);
-    osDelay(500);
+      HAL_GPIO_TogglePin(LED_R_GPIO_Port, LED_R_Pin);
+      osDelay(500);
+      printf("usart ok\r\n");
   }
   /* USER CODE END LED_Task */
 }
