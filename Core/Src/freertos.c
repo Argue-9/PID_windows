@@ -27,6 +27,7 @@
 /* USER CODE BEGIN Includes */
 #include "usart.h"
 #include <stdio.h>
+#include "string.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -129,8 +130,17 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    HAL_GPIO_TogglePin(LED_G_GPIO_Port,LED_G_Pin);
-    osDelay(500);
+      if (recv_end_flag == 1) //接收完成标志
+      {
+          printf("全部收到！\r\n");
+          HAL_UART_Transmit_DMA(&huart8, rx_buffer, rx_len);
+          rx_len = 0;        //清除计数
+          recv_end_flag = 0; //清除接收结束标志位
+          memset(rx_buffer, 0, rx_len);
+          HAL_UART_Receive_DMA(&huart8, rx_buffer, BUFFER_SIZE); //重新打开DMA接收
+      }
+//    HAL_GPIO_TogglePin(LED_G_GPIO_Port,LED_G_Pin);
+//    osDelay(500);
   }
   /* USER CODE END StartDefaultTask */
 }
@@ -150,7 +160,7 @@ void LED_Task(void *argument)
   {
       HAL_GPIO_TogglePin(LED_R_GPIO_Port, LED_R_Pin);
       osDelay(500);
-      printf("usart ok\r\n");
+      //printf("usart ok\r\n");
   }
   /* USER CODE END LED_Task */
 }

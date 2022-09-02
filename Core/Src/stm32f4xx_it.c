@@ -24,6 +24,7 @@
 #include "task.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "usart.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -57,7 +58,9 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-
+extern DMA_HandleTypeDef hdma_uart8_rx;
+extern DMA_HandleTypeDef hdma_uart8_tx;
+extern UART_HandleTypeDef huart8;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -181,6 +184,59 @@ void SysTick_Handler(void)
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file (startup_stm32f4xx.s).                    */
 /******************************************************************************/
+
+/**
+  * @brief This function handles DMA1 stream0 global interrupt.
+  */
+void DMA1_Stream0_IRQHandler(void)
+{
+  /* USER CODE BEGIN DMA1_Stream0_IRQn 0 */
+
+  /* USER CODE END DMA1_Stream0_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_uart8_tx);
+  /* USER CODE BEGIN DMA1_Stream0_IRQn 1 */
+
+  /* USER CODE END DMA1_Stream0_IRQn 1 */
+}
+
+/**
+  * @brief This function handles DMA1 stream6 global interrupt.
+  */
+void DMA1_Stream6_IRQHandler(void)
+{
+  /* USER CODE BEGIN DMA1_Stream6_IRQn 0 */
+
+  /* USER CODE END DMA1_Stream6_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_uart8_rx);
+  /* USER CODE BEGIN DMA1_Stream6_IRQn 1 */
+
+  /* USER CODE END DMA1_Stream6_IRQn 1 */
+}
+
+/**
+  * @brief This function handles UART8 global interrupt.
+  */
+void UART8_IRQHandler(void)
+{
+  /* USER CODE BEGIN UART8_IRQn 0 */
+    uint32_t tmp_flag = 0;
+    uint32_t temp;
+    tmp_flag =__HAL_UART_GET_FLAG(&huart8,UART_FLAG_IDLE); //获取IDLE标志位
+    if((tmp_flag != RESET))//idle标志被置位
+    {
+        __HAL_UART_CLEAR_IDLEFLAG(&huart8);//清除标志位
+        //这两句和上面那句等效
+        HAL_UART_DMAStop(&huart8); //  停止DMA传输，防止
+        temp  =  __HAL_DMA_GET_COUNTER(&hdma_uart8_rx);// 获取DMA中未传输的数据个数
+        rx_len =  BUFFER_SIZE - temp; //总计数减去未传输的数据个数，得到已经接收的数据个数
+        recv_end_flag = 1;    // 接受完成标志位置1
+    }
+  /* USER CODE END UART8_IRQn 0 */
+  HAL_UART_IRQHandler(&huart8);
+  /* USER CODE BEGIN UART8_IRQn 1 */
+
+  /* USER CODE END UART8_IRQn 1 */
+}
 
 /* USER CODE BEGIN 1 */
 
