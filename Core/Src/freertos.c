@@ -53,16 +53,21 @@
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
-  .name = "defaultTask",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
+        .name = "defaultTask",
+        .stack_size = 128 * 4,
+        .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for LED */
 osThreadId_t LEDHandle;
 const osThreadAttr_t LED_attributes = {
-  .name = "LED",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityLow,
+        .name = "LED",
+        .stack_size = 128 * 4,
+        .priority = (osPriority_t) osPriorityLow,
+};
+/* Definitions for myTimer */
+osTimerId_t myTimerHandle;
+const osTimerAttr_t myTimer_attributes = {
+        .name = "myTimer"
 };
 
 /* Private function prototypes -----------------------------------------------*/
@@ -71,7 +76,10 @@ const osThreadAttr_t LED_attributes = {
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
+
 void LED_Task(void *argument);
+
+void myTimer_Callback(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -81,40 +89,44 @@ void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
   * @retval None
   */
 void MX_FREERTOS_Init(void) {
-  /* USER CODE BEGIN Init */
+    /* USER CODE BEGIN Init */
 
-  /* USER CODE END Init */
+    /* USER CODE END Init */
 
-  /* USER CODE BEGIN RTOS_MUTEX */
-  /* add mutexes, ... */
-  /* USER CODE END RTOS_MUTEX */
+    /* USER CODE BEGIN RTOS_MUTEX */
+    /* add mutexes, ... */
+    /* USER CODE END RTOS_MUTEX */
 
-  /* USER CODE BEGIN RTOS_SEMAPHORES */
-  /* add semaphores, ... */
-  /* USER CODE END RTOS_SEMAPHORES */
+    /* USER CODE BEGIN RTOS_SEMAPHORES */
+    /* add semaphores, ... */
+    /* USER CODE END RTOS_SEMAPHORES */
 
-  /* USER CODE BEGIN RTOS_TIMERS */
-  /* start timers, add new ones, ... */
-  /* USER CODE END RTOS_TIMERS */
+    /* Create the timer(s) */
+    /* creation of myTimer */
+    myTimerHandle = osTimerNew(myTimer_Callback, osTimerPeriodic, NULL, &myTimer_attributes);
 
-  /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
-  /* USER CODE END RTOS_QUEUES */
+    /* USER CODE BEGIN RTOS_TIMERS */
+    /* start timers, add new ones, ... */
+    /* USER CODE END RTOS_TIMERS */
 
-  /* Create the thread(s) */
-  /* creation of defaultTask */
-  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+    /* USER CODE BEGIN RTOS_QUEUES */
+    /* add queues, ... */
+    /* USER CODE END RTOS_QUEUES */
 
-  /* creation of LED */
-  LEDHandle = osThreadNew(LED_Task, NULL, &LED_attributes);
+    /* Create the thread(s) */
+    /* creation of defaultTask */
+    defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
-  /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
-  /* USER CODE END RTOS_THREADS */
+    /* creation of LED */
+    LEDHandle = osThreadNew(LED_Task, NULL, &LED_attributes);
 
-  /* USER CODE BEGIN RTOS_EVENTS */
-  /* add events, ... */
-  /* USER CODE END RTOS_EVENTS */
+    /* USER CODE BEGIN RTOS_THREADS */
+    /* add threads, ... */
+    /* USER CODE END RTOS_THREADS */
+
+    /* USER CODE BEGIN RTOS_EVENTS */
+    /* add events, ... */
+    /* USER CODE END RTOS_EVENTS */
 
 }
 
@@ -125,28 +137,15 @@ void MX_FREERTOS_Init(void) {
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument)
-{
-  /* USER CODE BEGIN StartDefaultTask */
-  /* Infinite loop */
-  for(;;)
-  {
-      if (recv_end_flag == 1) //接收完成标志
-      {
-          float value;
-          value = VofaModifyValue(rx_buffer,rx_len);
-          printf("%.2f\r\n",value);
+void StartDefaultTask(void *argument) {
+    /* USER CODE BEGIN StartDefaultTask */
+    osTimerStart(myTimerHandle, 1);
+    /* Infinite loop */
+    for (;;) {
 
-          HAL_UART_Transmit_DMA(&huart8, rx_buffer, rx_len);
-          rx_len = 0;        //清除计数
-          recv_end_flag = 0; //清除接收结束标志位
-          memset(rx_buffer, 0, rx_len);
-          HAL_UART_Receive_DMA(&huart8, rx_buffer, BUFFER_SIZE); //重新打开DMA接收
-      }
-    HAL_GPIO_TogglePin(LED_G_GPIO_Port,LED_G_Pin);
-    osDelay(200);
-  }
-  /* USER CODE END StartDefaultTask */
+        osDelay(1);
+    }
+    /* USER CODE END StartDefaultTask */
 }
 
 /* USER CODE BEGIN Header_LED_Task */
@@ -156,17 +155,51 @@ void StartDefaultTask(void *argument)
 * @retval None
 */
 /* USER CODE END Header_LED_Task */
-void LED_Task(void *argument)
-{
-  /* USER CODE BEGIN LED_Task */
-  /* Infinite loop */
-  for(;;)
-  {
-      HAL_GPIO_TogglePin(LED_R_GPIO_Port, LED_R_Pin);
-      osDelay(500);
-      //printf("usart ok\r\n");
-  }
-  /* USER CODE END LED_Task */
+void LED_Task(void *argument) {
+    /* USER CODE BEGIN LED_Task */
+    /* Infinite loop */
+    for (;;) {
+        if (recv_end_flag == 1) //接收完成标志
+        {
+            float value;
+            value = VofaModifyValue(rx_buffer, rx_len);
+            printf("%.2f\r\n", value);
+
+            HAL_UART_Transmit_DMA(&huart8, rx_buffer, rx_len);
+            rx_len = 0;        //清除计数
+            recv_end_flag = 0; //清除接收结束标志位
+            memset(rx_buffer, 0, rx_len);
+            HAL_UART_Receive_DMA(&huart8, rx_buffer, BUFFER_SIZE); //重新打开DMA接收
+        }
+        osDelay(1);
+//      HAL_GPIO_TogglePin(LED_R_GPIO_Port, LED_R_Pin);
+//      osDelay(200);
+        //printf("usart ok\r\n");
+    }
+    /* USER CODE END LED_Task */
+}
+
+/* myTimer_Callback function */
+//1ms进一次中断
+void myTimer_Callback(void *argument) {
+    /* USER CODE BEGIN myTimer_Callback */
+
+    static uint32_t run_times;
+
+    if (run_times == 500) {
+        HAL_GPIO_TogglePin(LED_G_GPIO_Port, LED_G_Pin);
+        run_times = 0;
+        printf("okk\r\n");
+//			MOTORC_SetVelWithRamp(50);
+//            MOTORC_SetAngle(360);
+    }
+
+//        MOTORC_InfoUpdateLoop();
+    if (run_times % 10 == 0);
+//            MOTORC_Test();
+    ++run_times;
+
+    /* USER CODE END myTimer_Callback */
 }
 
 /* Private application code --------------------------------------------------*/

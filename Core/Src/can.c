@@ -201,5 +201,5 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
 void CAN_DriverInit() {
     CAN_Init(&hcan1);
     CAN_FilterInit();
-/* USER CODE END 1 */
 }
+/* USER CODE END 1 */
