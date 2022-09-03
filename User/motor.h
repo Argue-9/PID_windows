@@ -32,5 +32,6 @@ void MOTORC_Test();
 void MOTORC_UpdateCurrent(int16_t current1);
 void MOTORC_InfoUpdateLoop();
 void MOTORC_SetVel(float rpm);
+void MOTORC_SetVelWithRamp(float rpm);
 float VofaModifyValue(const uint8_t* buffer,uint16_t len);
 #endif //TEST_MOTOR_H

@@ -31,9 +31,13 @@ void MOTORC_InfoInit()
 
     PID_DeInit(&motor_spd_pid);
 
-    motor_spd_pid.Kp = 30;
-    motor_spd_pid.Ki = 0.2;
+    motor_spd_pid.Kp = 60;
+    motor_spd_pid.Ki = 0.1;
     motor_spd_pid.Kd = 50;
+
+    motor_spd_pid.err_all_max = 2000;
+    motor_spd_pid.ramp_target_step = 0.3;
+    motor_spd_pid.out_max = 600;
 
 }
 
@@ -81,6 +85,11 @@ void MOTORC_SetVel(float rpm)
     motor_spd_pid.target_now = rpm;
 }
 
+void MOTORC_SetVelWithRamp(float rpm)
+{
+    motor_spd_pid.ramp_target = rpm;
+}
+
 void MOTORC_InfoUpdateLoop()
 {
     // 更新编码器数据，直接赋值
@@ -106,10 +115,13 @@ float VofaModifyValue(const uint8_t* buffer,uint16_t len)
     switch (buffer[0]) {
         case 'P':
             motor_spd_pid.Kp = value;
+            break;
         case 'I':
             motor_spd_pid.Ki = value;
+            break;
         case 'V':
-            MOTORC_SetVel(value);
+            MOTORC_SetVelWithRamp(value);
+            break;
     }
     return value;
 }

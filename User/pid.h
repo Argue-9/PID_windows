@@ -20,9 +20,9 @@ typedef struct
     float out_last;
     float target_now;
 
-    float err_all_max;
-    float ramp_target;
-    float ramp_target_step;
+    float err_all_max;          //error限幅
+    float ramp_target;          //斜坡目标值
+    float ramp_target_step;     //斜坡步长
 
     float out_max;
     float out_step_max;
@@ -30,4 +30,5 @@ typedef struct
 
 void PID_DeInit(PID_PramTypeDef *WhichPID);
 float PID_GetOutput(PID_PramTypeDef *WhichPID, float nowInput);
+float PID_UpdateTargetNow(PID_PramTypeDef *WhichPID);
 #endif //TEST_PID_H

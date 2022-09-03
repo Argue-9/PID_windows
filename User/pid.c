@@ -19,8 +19,30 @@ void PID_DeInit(PID_PramTypeDef *WhichPID)
     WhichPID->input_now = 0.0;
 }
 
+float PID_UpdateTargetNow(PID_PramTypeDef *WhichPID)
+{
+
+    if (WhichPID->target_now < WhichPID->ramp_target)
+    {
+        WhichPID->target_now += WhichPID->ramp_target_step;
+
+        if (WhichPID->target_now >= WhichPID->ramp_target)
+            WhichPID->target_now = WhichPID->ramp_target;
+    }
+    else if (WhichPID->target_now > WhichPID->ramp_target)  //反方向
+    {
+        WhichPID->target_now -= WhichPID->ramp_target_step;
+        if (WhichPID->target_now <= WhichPID->ramp_target)
+            WhichPID->target_now = WhichPID->ramp_target;
+    }
+
+    return WhichPID->target_now;
+}
+
 float PID_GetOutput(PID_PramTypeDef *WhichPID, float nowInput)
 {
+    //更新参数
+    PID_UpdateTargetNow(WhichPID);
 
     WhichPID->input_now = nowInput;
     WhichPID->err_lastlast = WhichPID->err_last;
@@ -28,7 +50,21 @@ float PID_GetOutput(PID_PramTypeDef *WhichPID, float nowInput)
     WhichPID->err_now = WhichPID->target_now - nowInput;
     WhichPID->err_all += WhichPID->err_now;
 
+    //对error_all限幅
+    if(WhichPID->err_all > WhichPID->err_all_max)
+        WhichPID->err_all = WhichPID->err_all_max;
+    else if(WhichPID->err_all < -WhichPID->err_all_max)
+        WhichPID->err_all = -WhichPID->err_all_max;
+
+    //PID公式
     WhichPID->out_now = WhichPID->Kp * WhichPID->err_now + WhichPID->Kd * (WhichPID->err_now - WhichPID->err_last) + (WhichPID->err_all * WhichPID->Ki);
+
+    //对输出电流限幅
+    if(WhichPID->out_now > WhichPID->out_max)
+        WhichPID->out_now = WhichPID->out_max;
+    else if(WhichPID->out_now < -WhichPID->out_max)
+        WhichPID->out_now = -WhichPID->out_max;
 
     return WhichPID->out_now;
 }
+
