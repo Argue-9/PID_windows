@@ -41,7 +41,7 @@ float PID_UpdateTargetNow(PID_PramTypeDef *WhichPID)
 
 float PID_GetOutput(PID_PramTypeDef *WhichPID, float nowInput)
 {
-    //更新参数
+    //斜坡更新参数  因此位置环也默认斜坡
     PID_UpdateTargetNow(WhichPID);
 
     WhichPID->input_now = nowInput;
@@ -65,6 +65,13 @@ float PID_GetOutput(PID_PramTypeDef *WhichPID, float nowInput)
     else if(WhichPID->out_now < -WhichPID->out_max)
         WhichPID->out_now = -WhichPID->out_max;
 
+    //微分限幅 保证变化没那么剧烈
+    if (WhichPID->out_now - WhichPID->out_last >= WhichPID->out_step_max)
+        WhichPID->out_now = WhichPID->out_last + WhichPID->out_step_max;
+    else if (WhichPID->out_now - WhichPID->out_last <= -WhichPID->out_step_max)
+        WhichPID->out_now = WhichPID->out_last + -WhichPID->out_step_max;
+
+    WhichPID->out_last = WhichPID->out_now;
     return WhichPID->out_now;
 }
 

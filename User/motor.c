@@ -11,6 +11,7 @@
 #define ENCODER_TO_ANGLE (360.0 / 8192.0f)
 MOTORC_Info_t motor_infos;
 PID_PramTypeDef motor_spd_pid;
+PID_PramTypeDef motor_pos_pid;
 
 /**
   * @brief  初始化电机的结构体
@@ -37,8 +38,18 @@ void MOTORC_InfoInit()
 
     motor_spd_pid.err_all_max = 2000;
     motor_spd_pid.ramp_target_step = 0.3;
-    motor_spd_pid.out_max = 600;
+    motor_spd_pid.out_max = 1450;
+    motor_spd_pid.out_step_max = 100;
 
+    PID_DeInit(&motor_pos_pid);//位置环不需要积分项
+
+    motor_pos_pid.Kp = 1;
+    motor_pos_pid.Ki = 0;
+    motor_pos_pid.Kd = 0;
+
+    motor_pos_pid.ramp_target_step = 1000;
+    motor_pos_pid.out_max = 80;
+    motor_pos_pid.out_step_max = 40;
 }
 
 void MOTORC_SetCurrent(int16_t current)
@@ -90,10 +101,16 @@ void MOTORC_SetVelWithRamp(float rpm)
     motor_spd_pid.ramp_target = rpm;
 }
 
+void MOTORC_SetAngle(float angle)
+{
+    motor_pos_pid.ramp_target = angle;
+}
 void MOTORC_InfoUpdateLoop()
 {
     // 更新编码器数据，直接赋值
     MOTORC_InfoUpdate();
+    PID_GetOutput(&motor_pos_pid, motor_infos.angle_all);
+    MOTORC_SetVelWithRamp(motor_pos_pid.out_now);
     PID_GetOutput(&motor_spd_pid, motor_infos.velocity);
     MOTORC_UpdateCurrent(motor_spd_pid.out_now);
 
@@ -122,6 +139,12 @@ float VofaModifyValue(const uint8_t* buffer,uint16_t len)
         case 'V':
             MOTORC_SetVelWithRamp(value);
             break;
+        case 'A':
+            MOTORC_SetAngle(value);
+            break;
+        case 'K':
+            motor_pos_pid.Kp = value;
+            break;
     }
     return value;
 }
@@ -129,6 +152,6 @@ float VofaModifyValue(const uint8_t* buffer,uint16_t len)
 void MOTORC_Test()
 {
     //printf("m:%f, %f, %d, %d\n", motor_infos.velocity, motor_infos.angle_all, motor_infos.rota_times, motor_infos.position);
-    printf("pid:%f, %f, %f\n", motor_spd_pid.target_now, motor_spd_pid.input_now, motor_spd_pid.out_now);
-    //printf("%f\n",motor_spd_pid.Kp);
+    //printf("pid:%f, %f, %f\n", motor_spd_pid.target_now, motor_spd_pid.input_now, motor_spd_pid.out_now);
+    printf("pos:%f, %f, %f, %f, %f\n", motor_pos_pid.target_now, motor_pos_pid.input_now, motor_pos_pid.out_now, motor_spd_pid.target_now, motor_spd_pid.input_now);
 }

@@ -14,29 +14,20 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="203e92ec-f877-4566-9a7b-7a20b47f03a3" name="变更" comment="CAN Receive Msg ok">
+    <list default="true" id="203e92ec-f877-4566-9a7b-7a20b47f03a3" name="变更" comment="PID Speed OK">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/User/motor.c" beforeDir="false" afterPath="$PROJECT_DIR$/User/motor.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/User/motor.h" beforeDir="false" afterPath="$PROJECT_DIR$/User/motor.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/User/pid.c" beforeDir="false" afterPath="$PROJECT_DIR$/User/pid.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/User/pid.h" beforeDir="false" afterPath="$PROJECT_DIR$/User/pid.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-8532f8ce25721b11c314.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2022-09-02T14-15-29-0554.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.22.3/CMakeDetermineCompilerABI_C.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.22.3/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.22.3/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.22.3/CMakeDetermineCompilerABI_CXX.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Test.elf.dir/Core/Src/freertos.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Test.elf.dir/Core/Src/freertos.c.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Test.elf.dir/User/motor.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Test.elf.dir/User/motor.c.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Test.elf.dir/User/pid.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Test.elf.dir/User/pid.c.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Test.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Test.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Test.elf" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Test.elf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Test.hex" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Test.hex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Test.map" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Test.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,7 +143,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662127356413</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="PID Speed OK">
+      <created>1662187934497</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1662187934497</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -176,6 +174,7 @@
     <MESSAGE value="CAN ok" />
     <MESSAGE value="FreeRTOS Timer ok" />
     <MESSAGE value="CAN Receive Msg ok" />
-    <option name="LAST_COMMIT_MESSAGE" value="CAN Receive Msg ok" />
+    <MESSAGE value="PID Speed OK" />
+    <option name="LAST_COMMIT_MESSAGE" value="PID Speed OK" />
   </component>
 </project>
