@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include "string.h"
 #include "vofa.h"
+#include "motor.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -157,15 +158,16 @@ void StartDefaultTask(void *argument)
 void LED_Task(void *argument)
 {
   /* USER CODE BEGIN LED_Task */
+
     /* Infinite loop */
     for (;;) {
         if (recv_end_flag == 1) //接收完成标志
         {
             float value;
             value = VofaModifyValue(rx_buffer, rx_len);
-            printf("%.2f\r\n", value);
+            //printf("%.2f\r\n", value);
 
-            HAL_UART_Transmit_DMA(&huart8, rx_buffer, rx_len);
+            //HAL_UART_Transmit_DMA(&huart8, rx_buffer, rx_len);
             rx_len = 0;        //清除计数
             recv_end_flag = 0; //清除接收结束标志位
             memset(rx_buffer, 0, rx_len);
@@ -186,17 +188,22 @@ void myTimer_Callback(void *argument)
 
     static uint32_t run_times;
 
-    if (run_times == 500) {
-        HAL_GPIO_TogglePin(LED_G_GPIO_Port, LED_G_Pin);
-        run_times = 0;
-        printf("okk\r\n");
+    if (run_times % 50 == 0)
+    {
+        //MOTORC_SetVel(50);
 //			MOTORC_SetVelWithRamp(50);
 //            MOTORC_SetAngle(360);
     }
+    if (run_times == 500)
+    {
+        HAL_GPIO_TogglePin(LED_G_GPIO_Port, LED_G_Pin);
+        run_times = 0;
+    }
+    MOTORC_InfoUpdateLoop();//1ms更新一次
+    if (run_times % 10 == 0) {
+        MOTORC_Test();
+    }
 
-//        MOTORC_InfoUpdateLoop();
-    if (run_times % 10 == 0);
-//            MOTORC_Test();
     ++run_times;
 
   /* USER CODE END myTimer_Callback */

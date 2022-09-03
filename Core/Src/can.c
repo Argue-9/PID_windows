@@ -22,6 +22,7 @@
 
 /* USER CODE BEGIN 0 */
 #include "stdio.h"
+#include "motor.h"
 /* USER CODE END 0 */
 
 CAN_HandleTypeDef hcan1;
@@ -191,7 +192,8 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
             vel = (int16_t)(rx_data[2] << 8 | rx_data[3]);
             current = (int16_t) ((rx_data)[4] << 8 | rx_data[5]);
             tmp = (int16_t)rx_data[6];
-            //MOTORC_UpdateInfo(pos, vel);
+            //printf("%f %f %f %f\n",pos,vel,current,tmp);
+            MOTORC_CANUpdate(pos, vel);
         }
 
     }

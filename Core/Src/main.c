@@ -27,6 +27,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
+#include "motor.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -94,6 +95,7 @@ int main(void)
   MX_CAN1_Init();
   /* USER CODE BEGIN 2 */
   CAN_DriverInit();
+  MOTORC_InfoInit();
   /* USER CODE END 2 */
 
   /* Init scheduler */

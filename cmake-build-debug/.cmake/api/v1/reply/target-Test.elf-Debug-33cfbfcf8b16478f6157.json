@@ -473,16 +473,6 @@
 				"backtrace" : 5,
 				"fragment" : "E:/HotPot_RM/Test/STM32F427IIHX_FLASH.ld",
 				"role" : "flags"
-			},
-			{
-				"backtrace" : 5,
-				"fragment" : "User/pid.c",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 5,
-				"fragment" : "User/pid.h",
-				"role" : "flags"
 			}
 		],
 		"language" : "C"
